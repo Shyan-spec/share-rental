@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Share.</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="card.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <body>
+      <nav>
+        <p id="nav-search">Search</p>
+        <p id="nav-contact">Bookmarks</p>
+      </nav>
+      <main class="profile-container">
+        <div class="profile">
+          <div id="profile-title">Profile</div>
+          <div id="profile-center">
+            <div id="profile-bio">
+              <img id="profile-img" src="/assets/user-profile-icon.svg" />
+              <h2 id="profile-name"></h2>
+              <p>
+                As an experienced Host and Rental Agent, I take pride in
+                connecting people with the perfect spaces for their needs.
+                Whether you're seeking a cozy room for a weekend getaway or a
+                furnished apartment for a longer stay, my diverse portfolio of
+                properties ensures that there's something for everyone.
+              </p>
+              <button id="listing-button">View Listings</button>
+              <button id="browse-rentals-button">Browse Active Rentals</button>
+              <button id="bookmarks-button">Bookmarks</button>
+              <button id="open-modal">Create Listing</button>
+            </div>
+            <div id="profile-data">
+              <div class="inner-container">
+                <h2 id="user-info">User Information</h2>
+
+                <div class="user-meta-data">
+                  <label for="username">Username:</label>
+                  <input type="text" id="username" name="username" disabled />
+
+                  <label for="phone">Phone:</label>
+                  <input type="tel" id="phone" name="phone" />
+
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" />
+
+                  <label for="location">Location:</label>
+                  <input type="text" id="location" name="location" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <div id="popup" class="popup">
+        <div class="popup-content">
+            <h1> Create a Listing </h1>
+          <form id="upload-form">
+            <div class="form-group">
+              <label for="itemName">Name:</label>
+              <input type="text" id="itemName" name="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="itemDescription">Description:</label>
+              <textarea
+                id="itemDescription"
+                name="description"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="itemPrice">Price:</label>
+              <input type="number" id="itemPrice" name="price" required />
+            </div>
+
+            <input id=file-selector type="file" name="images" multiple required/>
+
+            <div class="save-cancel-buttons">
+                <button type="submit" id="upload-form">Save</button>
+                <button id="cancel-modal">Cancel</button>
+              </div>
+          </form>
+          <button id="close-modal">X</button>
+        </div>
+      </div>
+      <div id="view-listings"></div>
+      <footer>
+        <p>© 2023 Share.</p>
+        <p>Shyan Walker</p>
+      </footer>
+    </body>
+  </body>
+</html>

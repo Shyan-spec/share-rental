@@ -1,0 +1,40 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Adjust the gap as needed */
+  }
+  
+  .card {
+    width: 300px; /* Adjust the width as needed */
+    border-radius: 8px;
+    
+  }
+  
+  .card-image {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 1px;
+    margin-bottom: 25px;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    background-color: #f5f5f5; /* Placeholder in case the image doesn't load */
+  }
+  
+  .card-image img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This will ensure the image covers the area without stretching */
+  }
+  
+  .card-info {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  /* Responsive adjustments */
+ 
+  

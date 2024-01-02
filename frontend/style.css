@@ -1,49 +1,330 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&family=Special+Elite&display=swap");
+
 body {
-    margin: 0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
 }
 
 nav {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    height: 5vh;
-    background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  height: 5vh;
+  background-color: white;
 }
 
-#nav-search, #nav-profile, #nav-contact {
-
-   margin: 0 10px;
+#nav-search,
+#nav-profile,
+#nav-contact {
+  margin: 0 10px;
+  font-size: large;
 }
-
 
 .container {
-    
-    height: 95vh;
-    background-color: #f2f2f2;
-    display: grid; 
-    grid-auto-columns: 1fr; 
-    grid-template-columns: 1fr .6fr; 
-    grid-template-rows: 1fr; 
-    gap: 0px 0px; 
-    grid-template-areas: 
-        "header ." 
-        "sub-header ."
+  height: 95vh;
+  background-color: #f2f2f2;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr 0.6fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "header ."
+    "sub-header .";
 }
 
-#header { grid-area: 1 / 1 / 2 / 2; }
-#sub-header { grid-area: 1 / 1 / 2 / 2; }
+#header {
+  position: relative;
+  margin: 0;
+  grid-area: header;
+  text-align: start;
+  font-family: "Special Elite", sans-serif;
+  font-size: 10rem;
+}
+#sub-header {
+  grid-area: sub-header;
+  text-align: start;
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+}
 
+/* Style the main-header to have a maximum width and be full width on smaller screens */
 .main-header {
-    display: flex;
-
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center the content in the container */
+  width: 100%; /* Take up 100% of the .container width */
+  /* Maximum width of the header */
+  text-align: left; /* Align text to the left */
+  margin-left: 25%;
 }
 
-footer {
+/* Make sure input takes full width of the .main-header and has some padding */
+#main-search {
+  width: 50%; /* Take up 100% of the .main-header width */
+  padding: 10px; /* Padding inside the input for aesthetics */
+  margin-top: 20px; /* Margin above the input for spacing */
+  /* Add any other styles for the input element here */
+  text-align: left;
+}
+
+.gradient-text {
+  background-image: linear-gradient(
+    to right,
+    red,
+    /* Start with orange */ green,
+    /* Transition to green */ blue,
+    /* Then to blue */ yellow /* And finally to purple */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent; /* Make the text color transparent to show the gradient */
+  /* Allows the background to only take up the space of the text */
+}
+
+.profile-container {
+  height: 95vh;
+  background-color: #f2f2f2;
+}
+
+.profile {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1.8fr;
+    grid-template-areas:
+      "profile-title"
+      "profile-center";
+    height: 95vh; /* Adjust height as needed */
+  }
+  
+  #profile-center {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    grid-template-areas: "profile-bio profile-data";
+    grid-area: profile-center;
+  }
+  
+  #profile-bio {
+    grid-area: profile-bio;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    max-width: 600px; /* Adjust max-width as needed */
+    margin: auto;
+    align-items: flex-start;
+    margin-left: 50px
+  }
+  
+  #profile-data {
+    grid-area: profile-data;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 25vh;
-    background-color: black;
-    color: white;
-    flex-direction: column;
+    align-items: center; /* Changed from align-content for better alignment */
+  }
+  
+
+#profile-img {
+  width: 50%;
+  height: auto; /* Maintain aspect ratio */
+  margin: auto; /* Add space below the image */
+  margin-bottom: 5%;
+}
+
+#listing-button { 
+    border: none;
+   font-size: 2em;
+    
+}
+
+#browse-rentals-button {
+    border: none;
+    font-size: 2em;
+}
+
+#bookmarks-button {
+    border: none;
+    font-size: 2em;
+}
+
+#profile-bio h2 {
+  font-family: "Special Elite", sans-serif;
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+#user-info {
+  display: flex;
+  justify-content: center;
+  font-family: "Special Elite";
+}
+
+#profile-title {
+  grid-area: profile-title;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  font-family: "Special Elite", sans-serif;
+  font-size: 3rem;
+  padding: 25px;
+}
+
+.inner-container {
+  background-color: white; /* White background for the inner container */
+  border-radius: 15px; /* Rounded corners, adjust the value for more or less roundness */
+  padding: 20px; /* Padding inside the inner container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+  width: 75%; /* Adjust the width as needed */
+  max-width: 600px; /* Maximum width */
+  /* Add any additional styling here */
+  height: 90%;
+  margin-top: 0;
+}
+
+.user-meta-data { 
+    display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 75px;
+  
+}
+
+.user-meta-data input {
+
+    border: none;
+    background-color: #f2f2f2;
+    margin: 25px;
+    width: 75%;
+    height: 50px;
+    border-radius: 10px;
+    font-size: larger;
+    text-align: center;
+    
+}
+
+.user-meta-data label {
+
+    position: relative;
+    text-align: start;
+    
+}
+
+ .user-meta-data input:focus {
+    border: 3px solid black;
+    outline: none;
+  }
+
+.user-meta-data label {
+
+    font-size: 1.3em;
+}
+
+.new-div {
+    height: auto;
+    background: #f2f2f2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:20px;
+    padding: 20px;
+}
+
+.listing-title {
+    grid-area: profile-title;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    font-family: "Special Elite", sans-serif;
+    font-size: 3rem;
+    padding: 25px;
+    background: #f2f2f2;
+  }
+
+  .popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    z-index: 9999; /* Sit on top */
+    
+}
+
+.popup-content {
+    background-color: #f2f2f2;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    height: 80%;
+    z-index: 10000;
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    flex-direction: column; /* Align items vertically */
+    align-items: center; /* Center items horizontally */
+    overflow-y: auto;
+}
+
+.form-group {
+    margin-bottom: 15px; /* Add some space between form groups */
+    width: 100%; /* Full width within the container */
+}
+
+/* Style the file input */
+#file-selector {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    margin-top: 10px;
+}
+
+/* Style the buttons */
+.save-cancel-buttons button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the image preview area */
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.image-preview img {
+    width: 100px; /* Adjust based on your preference */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+#close-modal {
+    
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    cursor: pointer;
+    border: none;
+    font-size: larger;
+    color: grey;
+}
+
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+  background-color: black;
+  color: white;
+  flex-direction: column;
 }
