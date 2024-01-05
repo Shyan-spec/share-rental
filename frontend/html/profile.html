@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Share.</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="card.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/card.css" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script defer src="app.js"></script>
+    <script defer src="../script/profile.js"></script>
   </head>
   <body>
     <body>
       <nav>
         <p id="nav-search">Search</p>
+        <a id='nav-browse' href="../html/browse.html"> Browse </a>
         <p id="nav-contact">Bookmarks</p>
       </nav>
       <main class="profile-container">
@@ -56,6 +57,11 @@
           </div>
         </div>
       </main>
+      <div id="item-view" class="item-view">
+        <div class="detailed-item-view">
+
+        </div>
+      </div>
       <div id="popup" class="popup">
         <div class="popup-content">
             <h1> Create a Listing </h1>

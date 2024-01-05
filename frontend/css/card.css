@@ -8,7 +8,7 @@
   .card {
     width: 300px; /* Adjust the width as needed */
     border-radius: 8px;
-    
+    overflow: hidden;
   }
   
   .card-image {
