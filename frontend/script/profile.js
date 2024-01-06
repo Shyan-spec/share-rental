@@ -1,4 +1,5 @@
 let arrayOfImages = [];
+let newImageArray = []
 const listingsButton = document.getElementById("listing-button");
 const openCreateModalButton = document.querySelector("#open-modal");
 const closeCreateModalButton = document.querySelector("#close-modal");
@@ -30,13 +31,6 @@ function openCreateItemModal() {
 
 function closeCreateItemModal() {
   document.getElementById("popup").style.display = "none";
-}
-
-function updateProductNameInModal(newName) {
-  productName.textContent = "Product Name: " + newName;
-  productDescription = "Product Description " + newName;
-  productPrice = "Price " + newName
-  available = "Availabilty " = newName
 }
 
 function editCurrentItem(data) {
@@ -87,14 +81,17 @@ function editCurrentItem(data) {
 
   // Populate the new div with images
   data.images.forEach((element) => {
-    const image = document.createElement("img");
-    image.src = `http://localhost:3000/${element}`;
-    image.style.width = "100px";
-    image.style.height = "100px";
-    image.style.borderRadius = "10px";
-    arrayOfImages.push(image);
-    editImagesDiv.appendChild(image);
+    //const image = document.createElement("img");
+    // image.src = `http://localhost:3000/${element}`;
+    // image.style.width = "100px";
+    // image.style.height = "100px";
+    // image.style.borderRadius = "10px";
+    console.log(element)
+    arrayOfImages.push(element);
+    //editImagesDiv.appendChild(element);
   });
+
+  console.log(arrayOfImages);
 
   // Append inputs and images to formDiv
   formDiv.appendChild(nameLabel);
@@ -123,6 +120,17 @@ function editCurrentItem(data) {
   // Add event listeners to buttons
   formDiv.addEventListener("submit", savedUpdatedItem);
 
+  saveButton.addEventListener("click", function () {
+    // Update global variables with the new values from the form
+    productName.textContent = "Product Name: " + nameInput.value;
+    productDescription.textContent = "Description: " + descriptionInput.value;
+    productPrice.textContent = "Price: " + priceInput.value;
+    available.textContent =
+      "Available: " + (availableInput.checked ? "Yes" : "No");
+
+    // ... Include any additional logic for saving data to the server ...
+  });
+
   deleteButton.addEventListener("click", function () {
     // Implement delete functionality here
   });
@@ -140,6 +148,19 @@ async function savedUpdatedItem(e) {
   // Create FormData from the form, this includes all input fields
   const newFormData = new FormData(form);
 
+  console.log(newFormData.images);
+
+  newImageArray.forEach((image) => {
+    // Check if image is a File object or a URL string
+    if (image instanceof File) {
+      newFormData.append("images", image);
+    } else {
+      // For URL strings, you might need to handle them differently
+      // depending on your backend logic.
+      // Example: newFormData.append('existingImages', image);
+      console.log("true that")
+    }
+  });
 
   // Logging for debug purposes
   for (let [key, value] of newFormData.entries()) {
@@ -149,10 +170,13 @@ async function savedUpdatedItem(e) {
   try {
     const response = await axios.put(
       `http://localhost:3000/api/items/${id}`,
-      { "name": newFormData.get('productName'),
-        "description": newFormData.get('productDescription'),
-        "price": newFormData.get('productPrice'),
-        "available": newFormData.get('productAvailable')},
+      {
+        name: newFormData.get("productName"),
+        description: newFormData.get("productDescription"),
+        price: newFormData.get("productPrice"),
+        available: newFormData.get("productAvailable"),
+        images: newFormData.get("images"),
+      },
       {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -166,26 +190,28 @@ async function savedUpdatedItem(e) {
 
   // Clear the array after submission
   arrayOfImages = [];
+  newImageArray = [];
 }
-
 
 async function selectUpdatedImages(e) {
   const updateContentModal = document.querySelector("#info-div");
 
   Array.from(e.target.files).forEach((file) => {
-    const uploadedImage = document.createElement("img");
-    uploadedImage.src = URL.createObjectURL(file); // Create a URL for the file
-    uploadedImage.style.width = "100px";
-    uploadedImage.style.height = "auto";
-    uploadedImage.onload = () => URL.revokeObjectURL(uploadedImage.src); // Release object URL after loading
+    if (!arrayOfImages.includes(URL.createObjectURL(file))) {
+      const uploadedImage = document.createElement("img");
+      uploadedImage.src = URL.createObjectURL(file); // Create a URL for the file
+      uploadedImage.style.width = "100px";
+      uploadedImage.style.height = "auto";
+      uploadedImage.onload = () => URL.revokeObjectURL(uploadedImage.src); // Release object URL after loading
 
-    updateContentModal.appendChild(uploadedImage);
+      updateContentModal.appendChild(uploadedImage);
+    }
   });
 
-  arrayOfImages.push(...Array.from(e.target.files));
+  newImageArray.push(...Array.from(e.target.files));
 
-  console.log(arrayOfImages);
-  return arrayOfImages;
+  console.log(newImageArray);
+  return newImageArray;
 }
 
 function deleteCurrentItem() {
@@ -248,9 +274,7 @@ function populateModalWithData(data) {
   // Append all elements to infoDiv
   infoDiv.appendChild(itemTitle);
   infoDiv.appendChild(productName);
-  infoDiv.appendChild(document.createTextNode("Description: "));
   infoDiv.appendChild(productDescription);
-  infoDiv.appendChild(document.createTextNode("Price: "));
   infoDiv.appendChild(productPrice);
   infoDiv.appendChild(available);
 
