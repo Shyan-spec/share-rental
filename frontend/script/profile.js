@@ -328,7 +328,6 @@ async function selectImages(e) {
 }
 
 async function loadUserListings() {
-  let id = 0;
   const response = await axios
     .get("http://localhost:3000/api/items/user/658892c02f2941b502485764")
     .then((response) => {
@@ -345,7 +344,6 @@ async function loadUserListings() {
         deleteButton.id = "delete-button";
         card.className = "card";
         card.id = `card-${cardData._id}`;
-        id++;
         const cardImageDiv = document.createElement("div");
         cardImageDiv.className = "card-image";
         const img = document.createElement("img");

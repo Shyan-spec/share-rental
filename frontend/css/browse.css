@@ -9,3 +9,54 @@ background-color: white;
     height: 90%;
     margin-top: 0;
 }
+
+#browse-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    overflow-y: auto;
+    height: 80vh;
+}
+
+#browse-items-data {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 75%;
+    max-width: 600px;
+    height: 90%;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.item-description {
+    margin-bottom: 10px;
+}
+
+.item-price {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.item-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.item-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 10px; /* Space between images */
+}
