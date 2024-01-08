@@ -12,6 +12,7 @@
   <body>
     <body>
       <nav>
+        <a id="nav-homepage" href="/index.html"> Share<span class="gradient-text">.</span></a>
         <p id="nav-search">Search</p>
         <a id='nav-browse' href="../html/browse.html"> Browse </a>
         <p id="nav-contact">Bookmarks</p>
@@ -33,7 +34,7 @@
               <button id="listing-button">View Listings</button>
               <button id="browse-rentals-button">Browse Active Rentals</button>
               <button id="bookmarks-button">Bookmarks</button>
-              <button id="open-modal">Create Listing</button>
+              <button id="open-modal">Create a Listing</button>
             </div>
             <div id="profile-data">
               <div class="inner-container">
@@ -59,7 +60,9 @@
       </main>
       <div id="item-view" class="item-view">
         <div class="detailed-item-view">
+         <div class="image-viewer"> 
 
+         </div>
         </div>
       </div>
       <div id="popup" class="popup">
@@ -86,9 +89,14 @@
             </div>
 
             <input id=file-selector type="file" name="images" multiple required/>
+          <br/>
+            <label for="file-selector">Selected Images: </label>
+            <div id="selected-images">
+
+            </div>
 
             <div class="save-cancel-buttons">
-                <button type="submit" id="upload-form">Save</button>
+                <button type="submit" id="save-modal">Save</button>
                 <button id="cancel-modal">Cancel</button>
               </div>
           </form>

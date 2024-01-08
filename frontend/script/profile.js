@@ -1,5 +1,5 @@
+let currentImageIndex = 0; //Keep track of current image index
 let arrayOfImages = [];
-let newImageArray = []
 const listingsButton = document.getElementById("listing-button");
 const openCreateModalButton = document.querySelector("#open-modal");
 const closeCreateModalButton = document.querySelector("#close-modal");
@@ -17,8 +17,16 @@ const productDescription = document.createElement("p");
 const productPrice = document.createElement("p");
 const available = document.createElement("p");
 const editInfoDiv = document.querySelector("#info-div");
+const imageViewer = document.querySelector(".image-viewer");
+let formDiv;
+const selectedImagesDiv = document.querySelector('#selected-images');
+const imgEl = document.createElement("img");
+  imgEl.id = "item-img";
 
-listingsButton.addEventListener("click", toggleListings);
+listingsButton.addEventListener("click", () => {
+  toggleListings()
+  scrollToElement("view-listings")
+});
 openCreateModalButton.addEventListener("click", openCreateItemModal);
 closeCreateModalButton.addEventListener("click", closeCreateItemModal);
 cancelCreateModalButton.addEventListener("click", closeCreateItemModal);
@@ -38,183 +46,117 @@ function editCurrentItem(data) {
   const editInfoDiv = document.querySelector("#info-div");
   editInfoDiv.innerHTML = "";
 
-  // Create a new form div that will contain the inputs and images
-  const formDiv = document.createElement("form");
+  // Style for the form
+  editInfoDiv.style.display = "flex";
+  editInfoDiv.style.flexDirection = "column";
+  editInfoDiv.style.justifyContent = "center";
+  editInfoDiv.style.alignItems = "center";
+  editInfoDiv.style.padding = "20px";
+
+  // Style new form div that will contain the inputs and images
+  formDiv = document.createElement("form");
   formDiv.id = `update-form-${data._id}`;
+  formDiv.style.width = "100%";
 
-  // Create input elements
-  const nameLabel = document.createElement("p");
-  const nameInput = document.createElement("input");
-  nameInput.setAttribute("name", "productName");
-  nameLabel.textContent = "Product Name:";
-  nameInput.value = data.name;
+  // Create and append form fields
+  createFormField("Product Name:", "productName", data.name);
+  createFormField(
+    "Product Description:",
+    "productDescription",
+    data.description
+  );
+  createFormField("Price:", "productPrice", data.price);
+  createFormField("Availability:", "productAvailable", data.available, true);
 
-  const descriptionLabel = document.createElement("p");
-  const descriptionInput = document.createElement("input");
-  descriptionInput.setAttribute("name", "productDescription");
-  descriptionLabel.textContent = "Product Description:";
-  descriptionInput.value = data.description;
-
-  const priceLabel = document.createElement("p");
-  const priceInput = document.createElement("input");
-  priceInput.setAttribute("name", "productPrice");
-  priceLabel.textContent = "Price:";
-  priceInput.value = data.price;
-
-  const availableLabel = document.createElement("p");
-  const availableInput = document.createElement("input");
-  availableInput.name = "productAvailable";
-  availableLabel.textContent = "Availability:";
-  availableInput.type = "checkbox";
-  availableInput.checked = data.available;
-
-  const fileSelector = document.createElement("input");
-
-  // Set attributes of the input element
-  fileSelector.setAttribute("type", "file");
-  fileSelector.id = "update-file-selector";
-  fileSelector.setAttribute("name", "images");
-  fileSelector.setAttribute("multiple", "");
-  // Create a new div for images
-  const editImagesDiv = document.createElement("div");
-  editImagesDiv.id = "edit-images";
-
-  // Populate the new div with images
-  data.images.forEach((element) => {
-    //const image = document.createElement("img");
-    // image.src = `http://localhost:3000/${element}`;
-    // image.style.width = "100px";
-    // image.style.height = "100px";
-    // image.style.borderRadius = "10px";
-    console.log(element)
-    arrayOfImages.push(element);
-    //editImagesDiv.appendChild(element);
-  });
-
-  console.log(arrayOfImages);
-
-  // Append inputs and images to formDiv
-  formDiv.appendChild(nameLabel);
-  formDiv.appendChild(nameInput);
-  formDiv.appendChild(descriptionLabel);
-  formDiv.appendChild(descriptionInput);
-  formDiv.appendChild(priceLabel);
-  formDiv.appendChild(priceInput);
-  formDiv.appendChild(availableLabel);
-  formDiv.appendChild(availableInput);
-  formDiv.appendChild(fileSelector);
-  formDiv.appendChild(editImagesDiv);
-
+  // Style and append buttons
   const saveButton = document.createElement("input");
   saveButton.setAttribute("type", "submit");
   saveButton.setAttribute("value", "Save");
-  saveButton.textContent = "Save";
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "Delete";
+  saveButton.style.padding = "10px";
+  saveButton.style.margin = "10px 0";
+  saveButton.style.width = "100%";
+  saveButton.style.borderRadius = "5px";
+  saveButton.style.cursor = "pointer";
+
+  const cancelButton = document.createElement("button");
+  cancelButton.id = "cancel-button";
+  cancelButton.style.padding = "10px";
+  cancelButton.style.margin = "10px 0";
+  cancelButton.textContent = "Cancel";
+  cancelButton.style.width = "100%";
+  cancelButton.style.borderRadius = "5px";
+  cancelButton.style.cursor = "pointer";
 
   formDiv.appendChild(saveButton);
-  formDiv.appendChild(deleteButton);
+  formDiv.appendChild(cancelButton);
 
   editInfoDiv.appendChild(formDiv);
+
+  data.images.forEach((file) => {
+    arrayOfImages.push(file);
+  });
 
   // Add event listeners to buttons
   formDiv.addEventListener("submit", savedUpdatedItem);
 
-  saveButton.addEventListener("click", function () {
-    // Update global variables with the new values from the form
-    productName.textContent = "Product Name: " + nameInput.value;
-    productDescription.textContent = "Description: " + descriptionInput.value;
-    productPrice.textContent = "Price: " + priceInput.value;
-    available.textContent =
-      "Available: " + (availableInput.checked ? "Yes" : "No");
-
-    // ... Include any additional logic for saving data to the server ...
+  cancelButton.addEventListener("click", () => {
+    populateModalWithData(data);
   });
+}
 
-  deleteButton.addEventListener("click", function () {
-    // Implement delete functionality here
-  });
+function createFormField(labelText, inputName, inputValue, isCheckbox = false) {
+  const label = document.createElement("p");
+  label.textContent = labelText;
+  label.style.margin = "10px 0";
 
-  fileSelector.addEventListener("change", selectUpdatedImages);
+  const input = document.createElement("input");
+  input.setAttribute("name", inputName);
+  input.value = inputValue;
+  input.style.width = "95%";
+  input.style.padding = "8px";
+  input.style.margin = "5px 0";
+  if (isCheckbox) {
+    input.type = "checkbox";
+    input.checked = inputValue;
+  }
+
+  formDiv.appendChild(label);
+  formDiv.appendChild(input);
 }
 
 async function savedUpdatedItem(e) {
-  e.preventDefault();
-
   const form = e.target;
   const id = form.id.split("-")[2];
   console.log("Item ID:", id);
 
-  // Create FormData from the form, this includes all input fields
-  const newFormData = new FormData(form);
-
-  console.log(newFormData.images);
-
-  newImageArray.forEach((image) => {
-    // Check if image is a File object or a URL string
-    if (image instanceof File) {
-      newFormData.append("images", image);
-    } else {
-      // For URL strings, you might need to handle them differently
-      // depending on your backend logic.
-      // Example: newFormData.append('existingImages', image);
-      console.log("true that")
-    }
-  });
-
-  // Logging for debug purposes
-  for (let [key, value] of newFormData.entries()) {
-    console.log(`${key}:`, value);
-  }
-
   try {
+    const updatedItemData = {
+      name: form.querySelector('[name="productName"]').value,
+      description: form.querySelector('[name="productDescription"]').value,
+      price: form.querySelector('[name="productPrice"]').value,
+      available: form.querySelector('[name="productAvailable"]').checked,
+      images: arrayOfImages, // Include existing images
+    };
+
+    console.log(updatedItemData.images);
+
     const response = await axios.put(
       `http://localhost:3000/api/items/${id}`,
-      {
-        name: newFormData.get("productName"),
-        description: newFormData.get("productDescription"),
-        price: newFormData.get("productPrice"),
-        available: newFormData.get("productAvailable"),
-        images: newFormData.get("images"),
-      },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      updatedItemData
     );
     console.log(response.data); // Log the response
+    arrayOfImages = [];
   } catch (error) {
     console.error("Error submitting form:", error);
   }
-
-  // Clear the array after submission
-  arrayOfImages = [];
-  newImageArray = [];
 }
 
-async function selectUpdatedImages(e) {
-  const updateContentModal = document.querySelector("#info-div");
+async function deleteCurrentItem(data) {
+  const id = data._id;
+  const response = await axios.delete(`http://localhost:3000/api/items/${id}`);
 
-  Array.from(e.target.files).forEach((file) => {
-    if (!arrayOfImages.includes(URL.createObjectURL(file))) {
-      const uploadedImage = document.createElement("img");
-      uploadedImage.src = URL.createObjectURL(file); // Create a URL for the file
-      uploadedImage.style.width = "100px";
-      uploadedImage.style.height = "auto";
-      uploadedImage.onload = () => URL.revokeObjectURL(uploadedImage.src); // Release object URL after loading
-
-      updateContentModal.appendChild(uploadedImage);
-    }
-  });
-
-  newImageArray.push(...Array.from(e.target.files));
-
-  console.log(newImageArray);
-  return newImageArray;
-}
-
-function deleteCurrentItem() {
+  
+  location.reload()
   document.getElementById("popup").style.display = "none";
 }
 
@@ -239,7 +181,16 @@ function openDetailedItemViewModal(id, editMode) {
 }
 
 function populateModalWithData(data) {
+  imageViewer.innerHTML = "";
+
+  let itemData = data;
   const newEditButton = document.createElement("button");
+  const changeImageLeft = document.createElement("button");
+  const changeImageRight = document.createElement("button");
+  changeImageLeft.id = "left-button";
+  changeImageRight.id = "right-button";
+  changeImageLeft.textContent = "←";
+  changeImageRight.textContent = "→";
 
   itemView.innerHTML = "";
 
@@ -247,8 +198,6 @@ function populateModalWithData(data) {
   infoDiv.id = "info-div";
 
   const imageUrl = `http://localhost:3000/${data.images[0]}`;
-  const imgEl = document.createElement("img");
-  imgEl.id = "item-img";
   imgEl.src = imageUrl;
   imgEl.style.width = "100%";
   imgEl.style.height = "100%";
@@ -278,24 +227,40 @@ function populateModalWithData(data) {
   infoDiv.appendChild(productPrice);
   infoDiv.appendChild(available);
 
-  itemView.appendChild(imgEl);
+  imageViewer.appendChild(changeImageLeft);
+  imageViewer.appendChild(imgEl);
+  imageViewer.appendChild(changeImageRight);
+
+  itemView.appendChild(imageViewer);
   itemView.appendChild(infoDiv);
 
   newEditButton.textContent = "Edit";
+  newEditButton.id = "edit-button";
   deleteItemButton.textContent = "Remove";
+  deleteItemButton.id = "delete-button";
 
   infoDiv.appendChild(newEditButton);
   infoDiv.appendChild(deleteItemButton);
 
+  changeImageLeft.addEventListener("click", () => changePhotoLeft(data.images))
+  changeImageRight.addEventListener("click", () => changePhotoRight(data.images))
+
   newEditButton.addEventListener("click", () => onEditItemClicked(data));
+
+  deleteItemButton.addEventListener("click", () => deleteCurrentItem(itemData));
+
+  if(!data.available) {
+    infoDiv.removeChild(deleteItemButton)
+  }
+
+  if(data.images.length === 1) {
+    imageViewer.removeChild(changeImageLeft);
+    imageViewer.removeChild(changeImageRight);
+  }
 }
 
 function onEditItemClicked(data) {
   editCurrentItem(data); // Make sure 'data' is accessible in this scope
-}
-
-function onDeleteItemClicked() {
-  deleteCurrentItem(data); // Make sure 'data' is accessible in this scope
 }
 
 function closeDetailedItemViewModal() {
@@ -310,7 +275,13 @@ window.onclick = function (event) {
 
   if (event.target == document.getElementById("item-view")) {
     document.getElementById("item-view").style.display = "none";
-    console.log("cleared");
+    console.log("cleared Item");
+    clearModal();
+  }
+
+  if (event.target == document.querySelector(".image-viewer")) {
+    document.querySelector(".image-viewer").style.display = "none";
+    console.log("cleared Images");
     clearModal();
   }
 };
@@ -332,12 +303,12 @@ async function createListing(e) {
     .then((response) => {
       console.log(response.data);
       arrayOfImages = [];
+      location.reload()
     })
     .catch((error) => console.error("Error:", error));
 }
 
 async function selectImages(e) {
-  const contentModal = document.querySelector(".popup-content");
 
   Array.from(e.target.files).forEach((file) => {
     const uploadedImage = document.createElement("img");
@@ -346,7 +317,8 @@ async function selectImages(e) {
     uploadedImage.style.height = "auto";
     uploadedImage.onload = () => URL.revokeObjectURL(uploadedImage.src); // Release object URL after loading
 
-    contentModal.appendChild(uploadedImage);
+    //contentModal.appendChild(uploadedImage);
+    selectedImagesDiv.appendChild(uploadedImage)
   });
 
   arrayOfImages.push(...Array.from(e.target.files));
@@ -368,7 +340,9 @@ async function loadUserListings() {
         const editButton = document.createElement("button");
         const deleteButton = document.createElement("button");
         editButton.textContent = "Edit";
+        editButton.id = "edit-button";
         deleteButton.textContent = "Remove";
+        deleteButton.id = "delete-button";
         card.className = "card";
         card.id = `card-${cardData._id}`;
         id++;
@@ -387,12 +361,13 @@ async function loadUserListings() {
         const price = document.createElement("p");
         price.textContent = `Price: $${cardData.price}/day`;
         const available = document.createElement("p");
-        available.textContent = `Available: ${
-          cardData.available ? "Yes" : "No"
-        }`;
-        available.style.color =
-          available.textContent === "Yes" ? "red" : "green";
+        available.textContent = "Available: ";
 
+        const availabilityStatus = document.createElement("span");
+        availabilityStatus.textContent = cardData.available ? "Yes" : "No";
+        availabilityStatus.style.color = cardData.available ? "green" : "red";
+
+        available.appendChild(availabilityStatus);
         cardInfoDiv.appendChild(itemName);
         cardInfoDiv.appendChild(price);
         cardInfoDiv.appendChild(available);
@@ -405,9 +380,14 @@ async function loadUserListings() {
         editButton.addEventListener("click", () => {
           openDetailedItemViewModal(cardData._id, true);
         });
-        //deleteButton.addEventListener()
+        
+        deleteButton.addEventListener("click", () => {deleteCurrentItem(cardData)})
 
         cardContainer.appendChild(card);
+        
+        if(!cardData.available) {
+          cardInfoDiv.removeChild(deleteButton)
+        }
       });
     });
   document.querySelectorAll(".card-image").forEach((element) => {
@@ -449,12 +429,35 @@ function clearModal() {
   // Clear modal content
   const modalContentDiv = document.querySelector("#info-div");
   modalContentDiv.innerHTML = "";
-  // Remove any event listeners if they are not removed by innerHTML = "" above
-  // For example:
-  // const editButton = modalContentDiv.querySelector("#edit-button");
-  // if (editButton) {
-  //   editButton.removeEventListener("click", namedEditFunction);
-  // }
+
+  const modalImageDiv = document.querySelector(".image-viewer");
+  modalImageDiv.innerHTML = "";
+
+  arrayOfImages = [];
+}
+
+function changePhotoLeft(dataImages) {
+  if (currentImageIndex > 0) {
+    currentImageIndex--; 
+  } else {
+    currentImageIndex = dataImages.length - 1; // Loop back to the last image if at the beginning
+  }
+  updateImageSrc(dataImages[currentImageIndex]);
+}
+
+function changePhotoRight(dataImages) {
+  if (currentImageIndex < dataImages.length - 1) {
+    currentImageIndex++;
+  } else {
+    currentImageIndex = 0; // Loop back to the first image if at the end
+  }
+  updateImageSrc(dataImages[currentImageIndex]);
+}
+
+function updateImageSrc(newSrc) {
+  const imageElement = document.getElementById("item-img"); 
+  imageElement.src = `http://localhost:3000/${newSrc}`;
+  console.log(newSrc); // Log the new source URL
 }
 
 function toggleListings() {
@@ -472,6 +475,13 @@ function toggleListings() {
     container.appendChild(listingTitle);
     container.appendChild(newDiv);
     loadUserListings();
+  }
+}
+
+function scrollToElement(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 

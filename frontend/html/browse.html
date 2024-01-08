@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="/frontend/script/browse.js"></script>
     <link rel="stylesheet" href="/frontend/css/style.css" />
+    <link rel="stylesheet" href="/frontend/css/browse.css" />
     <title>Share.</title>
 </head>
 <body>
-    <nav>
-        <p id="nav-search">Search</p>
-        <p id="nav-contact">Bookmarks</p>
-        <a href="../html/profile.html" id="nav-profile">Profile</a>
-      </nav>
+  <nav>
+    <a id="nav-homepage" href="/index.html"> Share<span class="gradient-text">.</span></a>
+    <p id="nav-search">Search</p>
+    <p id="nav-contact">Bookmarks</p>
+    <a id='nav-profile' href="../html/profile.html"> Profile </a>
+  </nav>
     <main class="browse-container">
       <div class="browse">
         <div id="browse-title"> Browse </div>
         <div id="browse-center">
           <div id="browse-items"></div>
-          <div id="browse-items-data"></div>
+          <div id="browse-items-data">
+            <div id="item-data-container">
+              
+            </div>
+          </div>
         </div>
       </div>
     </main>
